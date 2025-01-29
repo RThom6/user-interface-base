@@ -23,7 +23,7 @@ namespace user_interface_base {
     }
 
     export interface CursorState {
-        navigator: INavigator 
+        navigator: INavigator
         pos: Vec2
         ariaId: string
         size: Bounds
@@ -48,7 +48,7 @@ namespace user_interface_base {
             this.cancelHandlerStack = []
             this.moveDest = new Vec2()
             this.setSize()
-            
+
             this.cursorOutlineColour = DEFAULT_CURSOR_OUTLINE_COLOUR
         }
 
@@ -79,12 +79,14 @@ namespace user_interface_base {
 
         public setSize(size?: Bounds) {
             size =
-                size || new Bounds({ left: 0, top: 0, width: 16, height: 16 })
+                size.grow(-2) ||
+                new Bounds({ left: 0, top: 0, width: 16, height: 16 })
             if (this.size) this.size.copyFrom(size)
             else this.size = size.clone()
         }
 
-        public setOutlineColour(colour: number = 9) { // 9 is the DEFAULT_CURSOR_OUTLINE_COLOUR
+        public setOutlineColour(colour: number = 9) {
+            // 9 is the DEFAULT_CURSOR_OUTLINE_COLOUR
             this.cursorOutlineColour = colour
         }
 
