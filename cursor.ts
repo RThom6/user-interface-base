@@ -40,6 +40,7 @@ namespace user_interface_base {
         size: Bounds
         visible = true
         private borderThickness: number
+        private textEnabled: boolean
 
         resetOutlineColourOnMove = false
         private cursorOutlineColour: number
@@ -100,6 +101,10 @@ namespace user_interface_base {
             }
         }
 
+        public setTextEnabled(enabled: boolean) {
+            this.textEnabled = enabled
+        }
+
         public restoreState(state: CursorState) {
             this.navigator = state.navigator
             this.xfrm.localPos.copyFrom(state.pos)
@@ -152,7 +157,7 @@ namespace user_interface_base {
             }
 
             const text = accessibility.ariaToTooltip(this.ariaId)
-            if (text) {
+            if (text && this.textEnabled) {
                 const pos = this.ariaPos || this.xfrm.localPos
                 const n = text.length
                 const w = font.charWidth * n
