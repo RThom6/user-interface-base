@@ -40,7 +40,7 @@ namespace user_interface_base {
         ariaId: string
         size: Bounds
         visible = true
-        tooltipEnabled = true
+        tooltipEnabled: boolean
         private borderThickness: number
 
         resetOutlineColourOnMove = false
@@ -77,7 +77,13 @@ namespace user_interface_base {
             this.ariaPos = ariaPos
         }
 
-        public snapTo(x: number, y: number, ariaId: string, sizeHint: Bounds) {
+        public snapTo(
+            x: number,
+            y: number,
+            ariaId: string,
+            sizeHint: Bounds,
+            tooltipEnabled: boolean
+        ) {
             this.setSize(
                 sizeHint ||
                     new Bounds({ left: 0, top: 0, width: 16, height: 16 })
@@ -85,6 +91,7 @@ namespace user_interface_base {
             this.moveDest.x = this.xfrm.localPos.x = x
             this.moveDest.y = this.xfrm.localPos.y = y
             this.setAriaContent(ariaId)
+            this.tooltipEnabled = tooltipEnabled
         }
 
         public setSize(size?: Bounds) {

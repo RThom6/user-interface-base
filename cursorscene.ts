@@ -122,7 +122,13 @@ namespace user_interface_base {
             )
             if (btn) {
                 const w = btn.xfrm.worldPos
-                this.cursor.snapTo(w.x, w.y, btn.ariaId, btn.bounds)
+                this.cursor.snapTo(
+                    w.x,
+                    w.y,
+                    btn.ariaId,
+                    btn.bounds,
+                    btn.isTooltipEnabled()
+                )
                 btn.reportAria(true)
             }
         }
@@ -136,7 +142,13 @@ namespace user_interface_base {
             const btn = this.navigator.initialCursor(0, 0)
             if (btn) {
                 const w = btn.xfrm.worldPos
-                this.cursor.snapTo(w.x, w.y, btn.ariaId, btn.bounds)
+                this.cursor.snapTo(
+                    w.x,
+                    w.y,
+                    btn.ariaId,
+                    btn.bounds,
+                    btn.isTooltipEnabled()
+                )
                 btn.reportAria(true)
             }
         }
