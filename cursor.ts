@@ -78,9 +78,9 @@ namespace user_interface_base {
         }
 
         public setSize(size?: Bounds) {
+            size.grow(-2)
             size =
-                size.grow(-2) ||
-                new Bounds({ left: 0, top: 0, width: 16, height: 16 })
+                size || new Bounds({ left: 0, top: 0, width: 16, height: 16 })
             if (this.size) this.size.copyFrom(size)
             else this.size = size.clone()
         }
