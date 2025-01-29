@@ -60,7 +60,7 @@ namespace user_interface_base {
             pos: Vec2,
             ariaId: string,
             sizeHint: Bounds,
-            tooltipEnabled?: boolean
+            tooltipEnabled: boolean
         ) {
             if (this.resetOutlineColourOnMove)
                 this.setOutlineColour(DEFAULT_CURSOR_OUTLINE_COLOUR)

@@ -12,9 +12,9 @@ namespace user_interface_base {
         SensorSelect,
         RecordingConfigSelect,
         RecordData,
-        DistributedLogging
+        DistributedLogging,
     }
-    
+
     export class CursorScene extends Scene {
         navigator: INavigator
         public cursor: Cursor
@@ -37,7 +37,7 @@ namespace user_interface_base {
                     e.kind === FORWARD_BUTTON_ERROR_KIND
                 )
                     return
-                else throw e 
+                else throw e
             }
         }
 
@@ -46,7 +46,8 @@ namespace user_interface_base {
             this.cursor.moveTo(
                 target.xfrm.worldPos,
                 target.ariaId,
-                target.bounds
+                target.bounds,
+                target.isTooltipEnabled()
             )
         }
 
@@ -150,18 +151,19 @@ namespace user_interface_base {
         }
     }
 
-    
     export class CursorSceneWithPriorPage extends CursorScene {
-        private goBack1PageFn: () => void;
+        private goBack1PageFn: () => void
 
-        constructor(app: AppInterface, goBack1PageFn: () => void, navigator?: INavigator) {
+        constructor(
+            app: AppInterface,
+            goBack1PageFn: () => void,
+            navigator?: INavigator
+        ) {
             super(app)
             this.backgroundColor = 11
-            
-            if (navigator)
-                this.navigator = navigator
-            else
-                this.navigator = null
+
+            if (navigator) this.navigator = navigator
+            else this.navigator = null
             this.goBack1PageFn = goBack1PageFn
         }
 
@@ -204,7 +206,7 @@ namespace user_interface_base {
                 controller.B.id,
                 () => this.back()
             )
-        
+
             control.onEvent(
                 ControllerButtonEvent.Pressed,
                 controller.B.id,
@@ -214,8 +216,7 @@ namespace user_interface_base {
             this.cursor = new Cursor()
             this.picker = new Picker(this.cursor)
 
-            if (this.navigator == null)
-                this.navigator = new RowNavigator()
+            if (this.navigator == null) this.navigator = new RowNavigator()
             this.cursor.navigator = this.navigator
         }
     }
