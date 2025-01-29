@@ -201,6 +201,7 @@ namespace user_interface_base {
         public selected: boolean
         private dynamicBoundaryColorsOn: boolean
         private boundaryColor: number
+        private tooltipEnabled: boolean
         public pressable: boolean
 
         public get ariaId(): string {
@@ -228,6 +229,7 @@ namespace user_interface_base {
             style?: ButtonStyle
             icon: string | Bitmap
             ariaId?: string
+            tooltipEnabled?: boolean
             x: number
             y: number
             onClick?: (button: Button) => void
@@ -241,6 +243,8 @@ namespace user_interface_base {
                 opts.style || ButtonStyles.Transparent,
                 opts.parent && opts.parent.xfrm
             )
+            this.tooltipEnabled =
+                opts.tooltipEnabled == null ? true : opts.tooltipEnabled
             this.iconId = opts.icon
             this._ariaId = opts.ariaId
             this.onClick = opts.onClick

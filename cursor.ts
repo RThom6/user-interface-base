@@ -27,6 +27,7 @@ namespace user_interface_base {
         pos: Vec2
         ariaId: string
         size: Bounds
+        tooltipEnabled?: boolean
     }
 
     export class Cursor implements IComponent, IPlaceable {
@@ -39,8 +40,8 @@ namespace user_interface_base {
         ariaId: string
         size: Bounds
         visible = true
+        tooltipEnabled = true
         private borderThickness: number
-        private textEnabled: boolean
 
         resetOutlineColourOnMove = false
         private cursorOutlineColour: number
@@ -97,12 +98,9 @@ namespace user_interface_base {
                 navigator: this.navigator,
                 pos: this.xfrm.localPos.clone(),
                 ariaId: this.ariaId,
+                tooltipEnabled: this.tooltipEnabled,
                 size: this.size.clone(),
             }
-        }
-
-        public setTextEnabled(enabled: boolean) {
-            this.textEnabled = enabled
         }
 
         public restoreState(state: CursorState) {
@@ -110,6 +108,7 @@ namespace user_interface_base {
             this.xfrm.localPos.copyFrom(state.pos)
             this.moveDest.copyFrom(state.pos)
             this.ariaId = state.ariaId
+            this.tooltipEnabled = state.tooltipEnabled
             this.size.copyFrom(state.size)
         }
 
@@ -157,7 +156,7 @@ namespace user_interface_base {
             }
 
             const text = accessibility.ariaToTooltip(this.ariaId)
-            if (text && this.textEnabled) {
+            if (text && this.tooltipEnabled) {
                 const pos = this.ariaPos || this.xfrm.localPos
                 const n = text.length
                 const w = font.charWidth * n
