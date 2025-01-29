@@ -13,7 +13,7 @@ namespace user_interface_base {
     export type PickerButtonDef = {
         icon: string
         ariaId?: string
-    } 
+    }
 
     export interface IPicker {
         size: number
@@ -76,15 +76,15 @@ namespace user_interface_base {
                     this.picker.style,
                     this.picker.xfrm
                 )
-                // TODO: 
-                btn.buildSprite(getIcon(def.icon,false))
+                // TODO:
+                btn.buildSprite(getIcon(def.icon, false))
                 this.cell.add(btn.bounds)
             })
             this.layoutDraw()
         }
 
         private setButtonCoords(idx: number, btn: ButtonBase) {
-            btn.buildSprite(getIcon(this.defs[idx].icon,false))
+            btn.buildSprite(getIcon(this.defs[idx].icon, false))
             const row = Math.idiv(idx, this.picker.width)
             btn.xfrm.localPos.x =
                 (this.cell.width >> 1) +
@@ -265,7 +265,12 @@ namespace user_interface_base {
 
             if (this.start < 0) this.start = 0
             const btn = this.navigator.moveToIndex(this.start)
-            this.cursor.moveTo(btn.xfrm.worldPos, btn.ariaId, btn.bounds)
+            this.cursor.moveTo(
+                btn.xfrm.worldPos,
+                btn.ariaId,
+                btn.bounds,
+                btn.isTooltipEnabled()
+            )
         }
     }
 

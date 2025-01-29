@@ -289,6 +289,10 @@ namespace user_interface_base {
                 : this.iconId
         }
 
+        public isTooltipEnabled() {
+            return this.tooltipEnabled
+        }
+
         public setIcon(iconId: string, img?: Bitmap) {
             this.iconId = iconId
             if (img) this.icon.setImage(img)

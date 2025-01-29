@@ -56,9 +56,15 @@ namespace user_interface_base {
             this.borderThickness = 1
         }
 
-        public moveTo(pos: Vec2, ariaId: string, sizeHint: Bounds) {
+        public moveTo(
+            pos: Vec2,
+            ariaId: string,
+            sizeHint: Bounds,
+            tooltipEnabled?: boolean
+        ) {
             if (this.resetOutlineColourOnMove)
                 this.setOutlineColour(DEFAULT_CURSOR_OUTLINE_COLOUR)
+            this.tooltipEnabled = tooltipEnabled == null ? true : tooltipEnabled
 
             this.setSize(sizeHint)
             this.moveDest.copyFrom(pos)
@@ -98,8 +104,8 @@ namespace user_interface_base {
                 navigator: this.navigator,
                 pos: this.xfrm.localPos.clone(),
                 ariaId: this.ariaId,
-                tooltipEnabled: this.tooltipEnabled,
                 size: this.size.clone(),
+                tooltipEnabled: this.tooltipEnabled,
             }
         }
 
@@ -108,8 +114,8 @@ namespace user_interface_base {
             this.xfrm.localPos.copyFrom(state.pos)
             this.moveDest.copyFrom(state.pos)
             this.ariaId = state.ariaId
-            this.tooltipEnabled = state.tooltipEnabled
             this.size.copyFrom(state.size)
+            this.tooltipEnabled = state.tooltipEnabled
         }
 
         public move(dir: CursorDir): Button {
