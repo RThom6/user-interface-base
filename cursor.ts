@@ -39,6 +39,7 @@ namespace user_interface_base {
         ariaId: string
         size: Bounds
         visible = true
+        private borderThickness: number
 
         resetOutlineColourOnMove = false
         private cursorOutlineColour: number
@@ -50,6 +51,7 @@ namespace user_interface_base {
             this.setSize()
 
             this.cursorOutlineColour = DEFAULT_CURSOR_OUTLINE_COLOUR
+            this.borderThickness = 1
         }
 
         public moveTo(pos: Vec2, ariaId: string, sizeHint: Bounds) {
@@ -129,6 +131,10 @@ namespace user_interface_base {
             return false
         }
 
+        public setThickness(thickness: number) {
+            this.borderThickness = thickness
+        }
+
         update() {
             this.xfrm.localPos.copyFrom(this.moveDest)
         }
@@ -136,7 +142,7 @@ namespace user_interface_base {
         draw() {
             if (!this.visible) return
 
-            for (let dist = 1; dist <= 3; dist++) {
+            for (let dist = 1; dist <= this.borderThickness; dist++) {
                 Screen.outlineBoundsXfrm(
                     this.xfrm,
                     this.size,

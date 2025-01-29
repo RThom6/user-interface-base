@@ -1,5 +1,4 @@
 namespace user_interface_base {
-
     export class Borders {
         constructor(
             public top: number,
@@ -221,7 +220,7 @@ namespace user_interface_base {
                 value: this.ariaId,
                 force,
             }
-            accessibility.setLiveContent(msg) 
+            accessibility.setLiveContent(msg)
         }
 
         constructor(opts: {
@@ -231,9 +230,9 @@ namespace user_interface_base {
             ariaId?: string
             x: number
             y: number
-            onClick?: (button: Button) => void,
+            onClick?: (button: Button) => void
             dynamicBoundaryColorsOn?: boolean
-            boundaryColor?: number,
+            boundaryColor?: number
             flipIcon?: boolean
         }) {
             super(
@@ -257,8 +256,7 @@ namespace user_interface_base {
 
             if (opts.dynamicBoundaryColorsOn == null) {
                 opts.dynamicBoundaryColorsOn = false
-            }
-            else {
+            } else {
                 this.dynamicBoundaryColorsOn = opts.dynamicBoundaryColorsOn
                 this.boundaryColor = 2
             }
@@ -283,10 +281,10 @@ namespace user_interface_base {
 
         private image_() {
             return typeof this.iconId == "string"
-                ? getIcon(this.iconId,false)
+                ? getIcon(this.iconId, false)
                 : this.iconId
         }
-        
+
         public setIcon(iconId: string, img?: Bitmap) {
             this.iconId = iconId
             if (img) this.icon.setImage(img)
@@ -310,7 +308,8 @@ namespace user_interface_base {
             super.draw()
 
             if (this.dynamicBoundaryColorsOn) {
-                const boundaryColour = (this.selected && this.pressable) ? 7: this.boundaryColor 
+                const boundaryColour =
+                    this.selected && this.pressable ? 7 : this.boundaryColor
 
                 for (let dist = 1; dist <= 3; dist++) {
                     Screen.outlineBoundsXfrm(
