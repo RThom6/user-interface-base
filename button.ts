@@ -4,7 +4,7 @@ namespace user_interface_base {
             public top: number,
             public bottom: number,
             public left: number,
-            public right: number
+            public right: number,
         ) {}
     }
 
@@ -12,7 +12,7 @@ namespace user_interface_base {
         constructor(
             public fill: number,
             public borders: Borders,
-            public shadow: boolean
+            public shadow: boolean,
         ) {}
     }
 
@@ -20,17 +20,17 @@ namespace user_interface_base {
         export const ShadowedWhite = new ButtonStyle(
             1,
             new Borders(1, 12, 1, 1),
-            true
+            true,
         )
         export const LightShadowedWhite = new ButtonStyle(
             1,
             new Borders(1, 11, 1, 1),
-            true
+            true,
         )
         export const FlatWhite = new ButtonStyle(
             1,
             new Borders(1, 1, 1, 1),
-            false
+            false,
         )
         /*
         export const RectangleWhite = new ButtonStyle(
@@ -42,17 +42,17 @@ namespace user_interface_base {
         export const BorderedPurple = new ButtonStyle(
             11,
             new Borders(12, 12, 12, 12),
-            false
+            false,
         )
         export const RedBorderedWhite = new ButtonStyle(
             1,
             new Borders(2, 2, 2, 2),
-            false
+            false,
         )
         export const Transparent = new ButtonStyle(
             0,
             new Borders(0, 0, 0, 0),
-            false
+            false,
         )
     }
 
@@ -108,7 +108,7 @@ namespace user_interface_base {
             return Bounds.GrowXY(
                 this.icon.bounds,
                 borderLeft(this.style),
-                borderTop(this.style)
+                borderTop(this.style),
             )
         }
 
@@ -168,27 +168,27 @@ namespace user_interface_base {
                 Screen.fillBoundsXfrm(
                     this.xfrm,
                     this.icon.bounds,
-                    this.style.fill
+                    this.style.fill,
                 )
             if (this.style.borders)
                 Screen.outlineBoundsXfrm4(
                     this.xfrm,
                     this.icon.bounds,
                     1,
-                    this.style.borders
+                    this.style.borders,
                 )
             if (this.style.shadow) {
                 Screen.setPixelXfrm(
                     this.xfrm,
                     this.icon.bounds.left - 1,
                     this.icon.bounds.bottom,
-                    this.style.borders.bottom
+                    this.style.borders.bottom,
                 )
                 Screen.setPixelXfrm(
                     this.xfrm,
                     this.icon.bounds.right + 1,
                     this.icon.bounds.bottom,
-                    this.style.borders.bottom
+                    this.style.borders.bottom,
                 )
             }
         }
@@ -241,7 +241,7 @@ namespace user_interface_base {
                 opts.x,
                 opts.y,
                 opts.style || ButtonStyles.Transparent,
-                opts.parent && opts.parent.xfrm
+                opts.parent && opts.parent.xfrm,
             )
             this.tooltipEnabled =
                 opts.tooltipEnabled == null ? true : opts.tooltipEnabled
@@ -324,7 +324,157 @@ namespace user_interface_base {
                         this.xfrm,
                         this.icon.bounds,
                         dist,
-                        boundaryColour
+                        boundaryColour,
+                    )
+                }
+            }
+        }
+    }
+
+    export class CustomButton extends ButtonBase {
+        private iconId?: string | Bitmap
+        private _ariaId: string
+        public onClick?: (button: Button) => void
+        public selected: boolean
+        private dynamicBoundaryColorsOn: boolean
+        private boundaryColor: number
+        private tooltipEnabled: boolean
+        public pressable: boolean
+
+        public set width(width: number) {
+            this.bounds.width = width
+        }
+
+        public set height(height: number) {
+            this.bounds.height = height
+        }
+
+        public get ariaId(): string {
+            return (
+                this._ariaId ||
+                (typeof this.iconId === "string" ? <string>this.iconId : "")
+            )
+        }
+
+        public set ariaId(value: string) {
+            this._ariaId = value
+        }
+
+        reportAria(force = false) {
+            const msg: accessibility.TileAccessibilityMessage = {
+                type: "tile",
+                value: this.ariaId,
+                force,
+            }
+            accessibility.setLiveContent(msg)
+        }
+
+        constructor(opts: {
+            parent?: IPlaceable
+            style?: ButtonStyle
+            icon: string | Bitmap
+            ariaId?: string
+            tooltipEnabled?: boolean
+            x: number
+            y: number
+            width: number
+            height: number
+            onClick?: (button: Button) => void
+            dynamicBoundaryColorsOn?: boolean
+            boundaryColor?: number
+            flipIcon?: boolean
+        }) {
+            super(
+                opts.x,
+                opts.y,
+                opts.style || ButtonStyles.Transparent,
+                opts.parent && opts.parent.xfrm,
+            )
+            this.tooltipEnabled =
+                opts.tooltipEnabled == null ? true : opts.tooltipEnabled
+            this.iconId = opts.icon
+            this._ariaId = opts.ariaId
+            this.onClick = opts.onClick
+            this.buildSprite(this.image_())
+
+            if (opts.flipIcon) {
+                this.icon.image = this.icon.image.clone()
+                this.icon.image.flipY()
+            }
+
+            this.width = opts.width
+            this.height = opts.height
+
+            this.selected = false
+            this.pressable = true
+
+            if (opts.dynamicBoundaryColorsOn == null) {
+                opts.dynamicBoundaryColorsOn = false
+            } else {
+                this.dynamicBoundaryColorsOn = opts.dynamicBoundaryColorsOn
+                this.boundaryColor = 2
+            }
+
+            if (opts.boundaryColor != null) {
+                this.dynamicBoundaryColorsOn = true
+                this.boundaryColor = opts.boundaryColor
+            }
+        }
+
+        public getIcon() {
+            return this.iconId
+        }
+
+        public toggleDynamicBoundaryColors() {
+            this.dynamicBoundaryColorsOn = !this.dynamicBoundaryColorsOn
+        }
+
+        public toggleSelected(): void {
+            this.selected = !this.selected
+        }
+
+        private image_() {
+            return typeof this.iconId == "string"
+                ? getIcon(this.iconId, false)
+                : this.iconId
+        }
+
+        public isTooltipEnabled() {
+            return this.tooltipEnabled
+        }
+
+        public setIcon(iconId: string, img?: Bitmap) {
+            this.iconId = iconId
+            if (img) this.icon.setImage(img)
+            else this.buildSprite(this.image_())
+        }
+
+        public clickable() {
+            return this.visible() && this.pressable
+        }
+
+        public click() {
+            if (!this.clickable()) {
+                return
+            }
+            if (this.onClick) {
+                this.onClick(this)
+            }
+        }
+
+        public draw() {
+            super.draw()
+
+            if (this.dynamicBoundaryColorsOn) {
+                const boundaryColour =
+                    this.selected && this.pressable ? 7 : this.boundaryColor
+
+                for (let dist = 1; dist <= 3; dist++) {
+                    Screen.outlineBoundsXfrm(
+                        this.xfrm,
+                        this.icon.bounds,
+                        dist,
+                        boundaryColour,
                     )
                 }
             }
