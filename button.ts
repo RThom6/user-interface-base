@@ -332,9 +332,12 @@ namespace user_interface_base {
     }
 
     export class CustomButton extends Button {
-        public onClick?: (button: Button) => void
-        public selected: boolean
-        public pressable: boolean
+        public get width() {
+            return this.bounds.width
+        }
+        public get height() {
+            return this.bounds.height
+        }
 
         public set width(width: number) {
             this.bounds.width = width
