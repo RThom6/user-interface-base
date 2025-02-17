@@ -331,14 +331,9 @@ namespace user_interface_base {
         }
     }
 
-    export class CustomButton extends ButtonBase {
-        private iconId?: string | Bitmap
-        private _ariaId: string
+    export class CustomButton extends Button {
         public onClick?: (button: Button) => void
         public selected: boolean
-        private dynamicBoundaryColorsOn: boolean
-        private boundaryColor: number
-        private tooltipEnabled: boolean
         public pressable: boolean
 
         public set width(width: number) {
@@ -347,26 +342,6 @@ namespace user_interface_base {
 
         public set height(height: number) {
             this.bounds.height = height
-        }
-
-        public get ariaId(): string {
-            return (
-                this._ariaId ||
-                (typeof this.iconId === "string" ? <string>this.iconId : "")
-            )
-        }
-
-        public set ariaId(value: string) {
-            this._ariaId = value
-        }
-
-        reportAria(force = false) {
-            const msg: accessibility.TileAccessibilityMessage = {
-                type: "tile",
-                value: this.ariaId,
-                force,
-            }
-            accessibility.setLiveContent(msg)
         }
 
         constructor(opts: {
@@ -384,100 +359,7 @@ namespace user_interface_base {
             boundaryColor?: number
             flipIcon?: boolean
         }) {
-            super(
-                opts.x,
-                opts.y,
-                opts.style || ButtonStyles.Transparent,
-                opts.parent && opts.parent.xfrm,
-            )
-            this.tooltipEnabled =
-                opts.tooltipEnabled == null ? true : opts.tooltipEnabled
-            this.iconId = opts.icon
-            this._ariaId = opts.ariaId
-            this.onClick = opts.onClick
-            this.buildSprite(this.image_())
-
-            if (opts.flipIcon) {
-                this.icon.image = this.icon.image.clone()
-                this.icon.image.flipY()
-            }
-
-            this.width = opts.width
-            this.height = opts.height
-
-            this.selected = false
-            this.pressable = true
-
-            if (opts.dynamicBoundaryColorsOn == null) {
-                opts.dynamicBoundaryColorsOn = false
-            } else {
-                this.dynamicBoundaryColorsOn = opts.dynamicBoundaryColorsOn
-                this.boundaryColor = 2
-            }
-
-            if (opts.boundaryColor != null) {
-                this.dynamicBoundaryColorsOn = true
-                this.boundaryColor = opts.boundaryColor
-            }
-        }
-
-        public getIcon() {
-            return this.iconId
-        }
-
-        public toggleDynamicBoundaryColors() {
-            this.dynamicBoundaryColorsOn = !this.dynamicBoundaryColorsOn
-        }
-
-        public toggleSelected(): void {
-            this.selected = !this.selected
-        }
-
-        private image_() {
-            return typeof this.iconId == "string"
-                ? getIcon(this.iconId, false)
-                : this.iconId
-        }
-
-        public isTooltipEnabled() {
-            return this.tooltipEnabled
-        }
-
-        public setIcon(iconId: string, img?: Bitmap) {
-            this.iconId = iconId
-            if (img) this.icon.setImage(img)
-            else this.buildSprite(this.image_())
-        }
-
-        public clickable() {
-            return this.visible() && this.pressable
-        }
-
-        public click() {
-            if (!this.clickable()) {
-                return
-            }
-            if (this.onClick) {
-                this.onClick(this)
-            }
-        }
-
-        public draw() {
-            super.draw()
-
-            if (this.dynamicBoundaryColorsOn) {
-                const boundaryColour =
-                    this.selected && this.pressable ? 7 : this.boundaryColor
-
-                for (let dist = 1; dist <= 3; dist++) {
-                    Screen.outlineBoundsXfrm(
-                        this.xfrm,
-                        this.icon.bounds,
-                        dist,
-                        boundaryColour,
-                    )
-                }
-            }
+            super(opts)
         }
     }
 }
