@@ -360,6 +360,9 @@ namespace user_interface_base {
             flipIcon?: boolean
         }) {
             super(opts)
+
+            this.width = opts.width
+            this.height = opts.height
         }
     }
 }
