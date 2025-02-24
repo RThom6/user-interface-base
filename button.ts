@@ -330,42 +330,4 @@ namespace user_interface_base {
             }
         }
     }
-
-    export class CustomButton extends Button {
-        public get width() {
-            return this.bounds.width
-        }
-        public get height() {
-            return this.bounds.height
-        }
-
-        public set width(width: number) {
-            this.bounds.width = width
-        }
-
-        public set height(height: number) {
-            this.bounds.height = height
-        }
-
-        constructor(opts: {
-            parent?: IPlaceable
-            style?: ButtonStyle
-            icon: string | Bitmap
-            ariaId?: string
-            tooltipEnabled?: boolean
-            x: number
-            y: number
-            width: number
-            height: number
-            onClick?: (button: Button) => void
-            dynamicBoundaryColorsOn?: boolean
-            boundaryColor?: number
-            flipIcon?: boolean
-        }) {
-            super(opts)
-
-            this.width = opts.width
-            this.height = opts.height
-        }
-    }
 }
