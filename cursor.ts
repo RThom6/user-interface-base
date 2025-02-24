@@ -86,7 +86,7 @@ namespace user_interface_base {
         ) {
             this.setSize(
                 sizeHint ||
-                    new Bounds({ left: 0, top: 0, width: 16, height: 16 })
+                new Bounds({ left: 0, top: 0, width: 16, height: 16 })
             )
             this.moveDest.x = this.xfrm.localPos.x = x
             this.moveDest.y = this.xfrm.localPos.y = y

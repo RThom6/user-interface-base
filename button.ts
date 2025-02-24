@@ -202,13 +202,11 @@ namespace user_interface_base {
         private dynamicBoundaryColorsOn: boolean
         private boundaryColor: number
         private tooltipEnabled: boolean
+        public state: number[]
         public pressable: boolean
 
         public get ariaId(): string {
-            return (
-                this._ariaId ||
-                (typeof this.iconId === "string" ? <string>this.iconId : "")
-            )
+            return this._ariaId
         }
 
         public set ariaId(value: string) {
@@ -227,7 +225,7 @@ namespace user_interface_base {
         constructor(opts: {
             parent?: IPlaceable
             style?: ButtonStyle
-            icon: string | Bitmap
+            icon?: string | Bitmap
             ariaId?: string
             tooltipEnabled?: boolean
             x: number
@@ -236,17 +234,18 @@ namespace user_interface_base {
             dynamicBoundaryColorsOn?: boolean
             boundaryColor?: number
             flipIcon?: boolean
+            state?: number[]
         }) {
             super(
-                opts.x,
-                opts.y,
+                opts.x != null ? opts.x : 0,
+                opts.y != null ? opts.y : 0,
                 opts.style || ButtonStyles.Transparent,
                 opts.parent && opts.parent.xfrm,
             )
             this.tooltipEnabled =
                 opts.tooltipEnabled == null ? true : opts.tooltipEnabled
             this.iconId = opts.icon
-            this._ariaId = opts.ariaId
+            this._ariaId = opts.ariaId != null ? opts.ariaId : ""
             this.onClick = opts.onClick
             this.buildSprite(this.image_())
 
@@ -269,6 +268,8 @@ namespace user_interface_base {
                 this.dynamicBoundaryColorsOn = true
                 this.boundaryColor = opts.boundaryColor
             }
+
+            this.state = opts.state
         }
 
         public getIcon() {
