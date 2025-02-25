@@ -201,7 +201,7 @@ namespace user_interface_base {
         public selected: boolean
         private dynamicBoundaryColorsOn: boolean
         private boundaryColor: number
-        private tooltipEnabled: boolean
+        private tooltipEnabled?: boolean
         public state: number[]
         public pressable: boolean
 
