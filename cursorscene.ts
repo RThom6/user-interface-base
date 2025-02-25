@@ -23,7 +23,9 @@ namespace user_interface_base {
         constructor(app: AppInterface, navigator?: INavigator) {
             super(app, "scene")
             this.backgroundColor = 11
-            this.navigator = navigator
+
+            if (navigator) this.navigator = navigator
+            else this.navigator = null
         }
 
         protected moveCursor(dir: CursorDir) {
@@ -47,7 +49,7 @@ namespace user_interface_base {
                 target.xfrm.worldPos,
                 target.ariaId,
                 target.bounds,
-                target.isTooltipEnabled()
+                target.isTooltipEnabled(),
             )
         }
 
@@ -56,22 +58,22 @@ namespace user_interface_base {
             control.onEvent(
                 ControllerButtonEvent.Pressed,
                 controller.right.id,
-                () => this.moveCursor(CursorDir.Right)
+                () => this.moveCursor(CursorDir.Right),
             )
             control.onEvent(
                 ControllerButtonEvent.Pressed,
                 controller.up.id,
-                () => this.moveCursor(CursorDir.Up)
+                () => this.moveCursor(CursorDir.Up),
             )
             control.onEvent(
                 ControllerButtonEvent.Pressed,
                 controller.down.id,
-                () => this.moveCursor(CursorDir.Down)
+                () => this.moveCursor(CursorDir.Down),
             )
             control.onEvent(
                 ControllerButtonEvent.Pressed,
                 controller.left.id,
-                () => this.moveCursor(CursorDir.Left)
+                () => this.moveCursor(CursorDir.Left),
             )
 
             // click
@@ -79,23 +81,22 @@ namespace user_interface_base {
             control.onEvent(
                 ControllerButtonEvent.Pressed,
                 controller.A.id,
-                click
+                click,
             )
             control.onEvent(
                 ControllerButtonEvent.Pressed,
                 controller.A.id + keymap.PLAYER_OFFSET,
-                click
+                click,
             )
             control.onEvent(
                 ControllerButtonEvent.Pressed,
                 controller.B.id,
-                () => this.back()
+                () => this.back(),
             )
 
             this.cursor = new Cursor()
             this.picker = new Picker(this.cursor)
-            if (this.navigator == null)
-                this.navigator = new RowNavigator()
+            if (this.navigator == null) this.navigator = new RowNavigator()
             this.cursor.navigator = this.navigator
         }
 
@@ -106,7 +107,7 @@ namespace user_interface_base {
         protected handleClick(x: number, y: number) {
             const target = this.cursor.navigator.screenToButton(
                 x - Screen.HALF_WIDTH,
-                y - Screen.HALF_HEIGHT
+                y - Screen.HALF_HEIGHT,
             )
             if (target) {
                 this.moveTo(target)
@@ -119,7 +120,7 @@ namespace user_interface_base {
         protected handleMove(x: number, y: number) {
             const btn = this.cursor.navigator.screenToButton(
                 x - Screen.HALF_WIDTH,
-                y - Screen.HALF_HEIGHT
+                y - Screen.HALF_HEIGHT,
             )
             if (btn) {
                 const w = btn.xfrm.worldPos
@@ -128,7 +129,7 @@ namespace user_interface_base {
                     w.y,
                     btn.ariaId,
                     btn.bounds,
-                    btn.isTooltipEnabled()
+                    btn.isTooltipEnabled(),
                 )
                 btn.reportAria(true)
             }
@@ -148,7 +149,7 @@ namespace user_interface_base {
                     w.y,
                     btn.ariaId,
                     btn.bounds,
-                    btn.isTooltipEnabled()
+                    btn.isTooltipEnabled(),
                 )
                 btn.reportAria(true)
             }
@@ -170,7 +171,7 @@ namespace user_interface_base {
         constructor(
             app: AppInterface,
             goBack1PageFn: () => void,
-            navigator?: INavigator
+            navigator?: INavigator,
         ) {
             super(app)
             this.backgroundColor = 11
@@ -184,22 +185,22 @@ namespace user_interface_base {
             control.onEvent(
                 ControllerButtonEvent.Pressed,
                 controller.right.id,
-                () => this.moveCursor(CursorDir.Right)
+                () => this.moveCursor(CursorDir.Right),
             )
             control.onEvent(
                 ControllerButtonEvent.Pressed,
                 controller.up.id,
-                () => this.moveCursor(CursorDir.Up)
+                () => this.moveCursor(CursorDir.Up),
             )
             control.onEvent(
                 ControllerButtonEvent.Pressed,
                 controller.down.id,
-                () => this.moveCursor(CursorDir.Down)
+                () => this.moveCursor(CursorDir.Down),
             )
             control.onEvent(
                 ControllerButtonEvent.Pressed,
                 controller.left.id,
-                () => this.moveCursor(CursorDir.Left)
+                () => this.moveCursor(CursorDir.Left),
             )
 
             // click
@@ -207,23 +208,23 @@ namespace user_interface_base {
             control.onEvent(
                 ControllerButtonEvent.Pressed,
                 controller.A.id,
-                click
+                click,
             )
             control.onEvent(
                 ControllerButtonEvent.Pressed,
                 controller.A.id + keymap.PLAYER_OFFSET,
-                click
+                click,
             )
             control.onEvent(
                 ControllerButtonEvent.Pressed,
                 controller.B.id,
-                () => this.back()
+                () => this.back(),
             )
 
             control.onEvent(
                 ControllerButtonEvent.Pressed,
                 controller.B.id,
-                () => this.goBack1PageFn()
+                () => this.goBack1PageFn(),
             )
 
             this.cursor = new Cursor()
