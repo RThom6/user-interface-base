@@ -60,7 +60,7 @@ namespace user_interface_base {
             pos: Vec2,
             ariaId: string,
             sizeHint: Bounds,
-            tooltipEnabled: boolean
+            tooltipEnabled?: boolean,
         ) {
             if (this.resetOutlineColourOnMove)
                 this.setOutlineColour(DEFAULT_CURSOR_OUTLINE_COLOUR)
@@ -82,16 +82,16 @@ namespace user_interface_base {
             y: number,
             ariaId: string,
             sizeHint: Bounds,
-            tooltipEnabled: boolean
+            tooltipEnabled?: boolean,
         ) {
             this.setSize(
                 sizeHint ||
-                new Bounds({ left: 0, top: 0, width: 16, height: 16 })
+                    new Bounds({ left: 0, top: 0, width: 16, height: 16 }),
             )
             this.moveDest.x = this.xfrm.localPos.x = x
             this.moveDest.y = this.xfrm.localPos.y = y
             this.setAriaContent(ariaId)
-            this.tooltipEnabled = tooltipEnabled
+            this.tooltipEnabled = tooltipEnabled == null ? true : tooltipEnabled
         }
 
         public setSize(size?: Bounds) {
@@ -164,7 +164,7 @@ namespace user_interface_base {
                     this.xfrm,
                     this.size,
                     dist,
-                    this.cursorOutlineColour
+                    this.cursorOutlineColour,
                 )
             }
 
@@ -176,11 +176,11 @@ namespace user_interface_base {
                 const h = font.charHeight
                 const x = Math.max(
                     Screen.LEFT_EDGE + 1,
-                    Math.min(Screen.RIGHT_EDGE - 1 - w, pos.x - (w >> 1))
+                    Math.min(Screen.RIGHT_EDGE - 1 - w, pos.x - (w >> 1)),
                 )
                 const y = Math.min(
                     pos.y + (this.size.width >> 1) + (font.charHeight >> 1) + 1,
-                    Screen.BOTTOM_EDGE - 1 - font.charHeight
+                    Screen.BOTTOM_EDGE - 1 - font.charHeight,
                 )
                 Screen.fillRect(x - 1, y - 1, w + 1, h + 2, 15)
                 Screen.print(text, x, y, 1, font)
